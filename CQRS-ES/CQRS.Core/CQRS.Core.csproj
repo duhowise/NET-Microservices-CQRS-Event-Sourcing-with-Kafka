@@ -10,4 +10,10 @@
     <PackageReference Include="mongodb.driver" Version="2.17.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Messages\" />
+    <Folder Include="Commands\" />
+    <Folder Include="Events\" />
+  </ItemGroup>
+
 </Project>
