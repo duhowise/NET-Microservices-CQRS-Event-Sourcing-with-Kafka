@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Infrastructure\Dispatchers\" />
     <Folder Include="Messages\" />
     <Folder Include="Commands\" />
     <Folder Include="Events\" />
