@@ -52,5 +52,7 @@ namespace CQRS.Core.Domain
                 ApplyChanges(@event,false);
             }
         }
+
+        
     }
 }
