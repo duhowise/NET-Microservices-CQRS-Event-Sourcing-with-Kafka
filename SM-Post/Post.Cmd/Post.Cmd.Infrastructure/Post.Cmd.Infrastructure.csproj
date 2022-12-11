@@ -14,10 +14,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\CQRS-ES\CQRS.Core\CQRS.Core.csproj" />
+    <ProjectReference Include="..\Post.Cmd.Domain\Post.Cmd.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Config\" />
+    <Folder Include="Stores\" />
   </ItemGroup>
 
 </Project>

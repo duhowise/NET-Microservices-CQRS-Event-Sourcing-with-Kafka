@@ -1,4 +1,6 @@
+using CQRS.Core.Domain;
 using Post.Cmd.Infrastructure.Config;
+using Post.Cmd.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.Configure<MongoDbConfig>(builder.Configuration.GetSection(nameof(MongoDbConfig)));
+builder.Services.AddScoped<IEventStoreRepository, EventStoreRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
