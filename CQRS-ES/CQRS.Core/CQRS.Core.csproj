@@ -14,6 +14,7 @@
     <Folder Include="Messages\" />
     <Folder Include="Commands\" />
     <Folder Include="Events\" />
+    <Folder Include="Handlers\" />
   </ItemGroup>
 
 </Project>
