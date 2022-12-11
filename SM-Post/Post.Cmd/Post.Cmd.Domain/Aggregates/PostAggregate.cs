@@ -138,7 +138,7 @@ public class PostAggregate : AggregateRoot
         _comments[@event.CommentId] = new(@event.Comment, @event.UserName);
     }
 
-    public void RemoveComment(Guid commentId, string comment, string username)
+    public void RemoveComment(Guid commentId, string username)
     {
         if (!_active)
         {
