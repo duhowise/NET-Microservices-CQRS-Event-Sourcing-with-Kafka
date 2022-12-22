@@ -17,4 +17,8 @@
     <ProjectReference Include="..\Post.Query.Domain\Post.Query.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DataAccess\" />
+  </ItemGroup>
+
 </Project>
