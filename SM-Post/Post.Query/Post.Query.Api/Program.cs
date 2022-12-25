@@ -1,3 +1,4 @@
+using CQRS.Core.Handlers;
 using Microsoft.EntityFrameworkCore;
 using Post.Query.Domain.Repositories;
 using Post.Query.Infrastructure.DataAccess;
