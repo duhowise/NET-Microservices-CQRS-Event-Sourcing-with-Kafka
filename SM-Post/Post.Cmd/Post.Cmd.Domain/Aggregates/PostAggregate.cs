@@ -128,7 +128,7 @@ public class PostAggregate : AggregateRoot
             Comment = comment,
             CommentId = commentId,
             UserName = username,
-            EditDate = DateTime.Now
+            CommentDate = DateTime.Now
         });
     }
 

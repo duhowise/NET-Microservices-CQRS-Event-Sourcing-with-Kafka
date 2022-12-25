@@ -1,4 +1,5 @@
-﻿using CQRS.Core.Events;
+﻿using System.Threading.Tasks;
+using CQRS.Core.Events;
 
 namespace CQRS.Core.Producers;
 

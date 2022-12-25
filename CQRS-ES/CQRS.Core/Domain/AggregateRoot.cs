@@ -1,4 +1,6 @@
-﻿using CQRS.Core.Events;
+﻿using System;
+using System.Collections.Generic;
+using CQRS.Core.Events;
 
 namespace CQRS.Core.Domain
 {

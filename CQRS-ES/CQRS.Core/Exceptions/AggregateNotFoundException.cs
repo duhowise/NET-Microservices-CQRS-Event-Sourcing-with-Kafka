@@ -1,4 +1,6 @@
-﻿namespace CQRS.Core.Exceptions;
+﻿using System;
+
+namespace CQRS.Core.Exceptions;
 
 public class AggregateNotFoundException : Exception
 {

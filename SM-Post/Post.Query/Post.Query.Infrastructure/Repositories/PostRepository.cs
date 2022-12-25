@@ -5,11 +5,11 @@ using Post.Query.Infrastructure.DataAccess;
 
 namespace Post.Query.Infrastructure.Repositories;
 
-public class PostRepositories : IPostRepository
+public class PostRepository : IPostRepository
 {
     private readonly DatabaseContextFactory _factory;
 
-    public PostRepositories(DatabaseContextFactory factory)
+    public PostRepository(DatabaseContextFactory factory)
     {
         _factory = factory;
     }
