@@ -31,7 +31,7 @@ public class EventConsumer : IEventConsumer
             var consumerResult= consumer.Consume();
             if(consumerResult?.Message==null) continue;
             var options = new JsonSerializerOptions { Converters = { new EventJsonConverter() } };
-            var @event = JsonSerializer.Deserialize<BaseEvent>(consumerResult.Value, options);
+            var @event = JsonSerializer.Deserialize<BaseEvent>(consumerResult.Message.Value, options);
             var handleMethod = _eventHandler.GetType().GetMethod("On", new Type[] { @event.GetType() });
             if (handleMethod==null)
             {
