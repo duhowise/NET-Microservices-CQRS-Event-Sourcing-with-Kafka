@@ -17,7 +17,7 @@ public class NewPostController:ControllerBase
         _logger = logger;
         _commandDispatcher = commandDispatcher;
     }
-
+[HttpPost("")]
     public async Task<IActionResult> NewPostAsync(NewPostCommand command)
     {
         var id = Guid.NewGuid();
@@ -28,6 +28,7 @@ public class NewPostController:ControllerBase
             await _commandDispatcher.SendAsync(command);
             return StatusCode(StatusCodes.Status201Created, new NewPostResponse
             {
+                Id = id,
                 Message = "New post creation request completed successfully"
             });
         }

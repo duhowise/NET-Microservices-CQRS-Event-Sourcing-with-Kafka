@@ -21,31 +21,39 @@ public class EventStore:IEventStore
 
     public async Task SaveEventAsync(Guid aggregateId, IEnumerable<BaseEvent> events, int expectedVersion)
     {
-        var eventStream = await _eventStoreRepository.FindByAggregateId(aggregateId);
-        if (expectedVersion!=-1 && eventStream[^1].Version!=expectedVersion)
+        try
         {
-            throw new ConcurrencyException();
-        }
-
-        var version = expectedVersion;
-        foreach (var @event in events)
-        {
-            version++;
-            @event.Version= version;
-            var eventType = @event.GetType().Name;
-            var eventModel = new EventModel
+            var eventStream = await _eventStoreRepository.FindByAggregateId(aggregateId);
+            if (expectedVersion!=-1 && eventStream[^1].Version!=expectedVersion)
             {
-                TimeStamp = DateTime.Now,
-                AggregateIdentifier = aggregateId,
-                AggregateType = nameof(PostAggregate),
-                Version = version,
-                EventType = eventType,
-                EventData = @event
-            };
+                throw new ConcurrencyException();
+            }
 
-            await _eventStoreRepository.SaveAsync(eventModel);
-            var topic = Environment.GetEnvironmentVariable("KAFKA_TOPIC");
-            await _eventProducer.ProduceAsync(topic, @event);
+            var version = expectedVersion;
+            foreach (var @event in events)
+            {
+                version++;
+                @event.Version= version;
+                var eventType = @event.GetType().Name;
+                var eventModel = new EventModel
+                {
+                    TimeStamp = DateTime.Now,
+                    AggregateIdentifier = aggregateId,
+                    AggregateType = nameof(PostAggregate),
+                    Version = version,
+                    EventType = eventType,
+                    EventData = @event
+                };
+
+                await _eventStoreRepository.SaveAsync(eventModel);
+                var topic = Environment.GetEnvironmentVariable("KAFKA_TOPIC");
+                await _eventProducer.ProduceAsync(topic, @event);
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
         }
     }
 

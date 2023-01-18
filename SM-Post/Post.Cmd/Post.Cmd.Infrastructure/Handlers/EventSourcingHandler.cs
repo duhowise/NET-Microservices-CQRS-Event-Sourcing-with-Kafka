@@ -16,7 +16,7 @@ public class EventSourcingHandler:IEventSourcingHandler<PostAggregate>
     public async Task SaveAsync(AggregateRoot aggregate)
     {
         await _eventStore.SaveEventAsync(aggregate.Id, aggregate.GetUncommitedChanges(), aggregate.Version);
-        aggregate.MarChangesAsCommitted();
+        aggregate.MarkChangesAsCommitted();
     }
 
     public async Task<PostAggregate> GetByIdAsync(Guid aggregateId)

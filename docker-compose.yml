@@ -3,11 +3,8 @@ version: '3.4'
 services:
   mongodb_container:
     image: mongo:latest
-    environment: 
-      MONGO_INIT_ROOT_USERNAME: root
-      MONGO_INIT_ROOT_PASSWORD: rootPassword
     ports:
-      - "27017:27107"
+      - "27017:27017"
     volumes:
       - mongdb_data_container:/data/db
     networks:
@@ -24,38 +21,33 @@ services:
     networks:
       - kafkadotnet
   zookeeper:
-    image: arm64v8/zookeeper
-    restart: always
+    image: wurstmeister/zookeeper
+    container_name: zookeeper
     ports:
       - "2181:2181"
-    volumes:
-      - "zookeeper_data:/bitnami"
+    restart: unless-stopped
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
     networks:
       - kafkadotnet
   kafka:
-    image: bitnami/kafka
+    image: wurstmeister/kafka
+    container_name: kafka
     ports:
       - "9092:9092"
-    restart: always
-    volumes:
-      - "kafka_data:/bitnami"
     environment:
-      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ADVERTISED_HOST_NAME=kafka
       - ALLOW_PLAINTEXT_LISTENER=yes
       - KAFKA_LISTENERS=PLAINTEXT://:9092
       - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+    restart: unless-stopped
     networks:
       - kafkadotnet
     depends_on:
       - zookeeper
 
 volumes:
-  zookeeper_data:
-    driver: local
-  kafka_data:
-    driver: local
   mongdb_data_container:
     driver: local
   sql-server-db:
