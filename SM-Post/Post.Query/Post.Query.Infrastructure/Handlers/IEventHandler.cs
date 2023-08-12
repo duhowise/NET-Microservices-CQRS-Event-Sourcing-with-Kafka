@@ -1,15 +1,12 @@
-﻿using Post.Common.Events;
+﻿using Mediator;
+using Post.Common.Events;
 
 namespace Post.Query.Infrastructure.Handlers
 {
-    public interface IEventHandler
+    public interface IEventHandler : ICommandHandler<PostCreatedEvent>,
+        ICommandHandler<MessageUpdatedEvent>,
+        ICommandHandler<PostLikedEvent>, ICommandHandler<CommentAddedEvent>, ICommandHandler<CommentUpdatedEvent>
+        , ICommandHandler<CommentRemovedEvent>, ICommandHandler<PostRemovedEvent>
     {
-        Task On(PostCreatedEvent @event);
-        Task On(MessageUpdatedEvent @event);
-        Task On(PostLikedEvent @event);
-        Task On(CommentAddedEvent @event);
-        Task On(CommentUpdatedEvent @event);
-        Task On(CommentRemovedEvent @event);
-        Task On(PostRemovedEvent @event);
     }
 }

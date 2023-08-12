@@ -1,8 +1,9 @@
 ﻿using CQRS.Core.Events;
+using Mediator;
 
 namespace Post.Common.Events;
 
-public class CommentUpdatedEvent : BaseEvent
+public class CommentUpdatedEvent : BaseEvent, ICommand
 {
     public CommentUpdatedEvent() : base(nameof(CommentUpdatedEvent))
     {
