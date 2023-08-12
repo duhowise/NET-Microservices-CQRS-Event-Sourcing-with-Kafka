@@ -1,4 +1,3 @@
-using CQRS.Core.Infrastructure;
 using Mediator;
 using Microsoft.AspNetCore.Mvc;
 using Post.Cmd.Api.Commands;

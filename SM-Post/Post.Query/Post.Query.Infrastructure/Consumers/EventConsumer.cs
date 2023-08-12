@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.Json;
+﻿using System.Text.Json;
 using Confluent.Kafka;
 using CQRS.Core.Consumers;
 using CQRS.Core.Events;

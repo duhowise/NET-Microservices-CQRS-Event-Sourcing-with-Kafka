@@ -1,5 +1,4 @@
-﻿using System.Data;
-using CQRS.Core.Domain;
+﻿using CQRS.Core.Domain;
 using CQRS.Core.Events;
 using CQRS.Core.Exceptions;
 using CQRS.Core.Infrastructure;

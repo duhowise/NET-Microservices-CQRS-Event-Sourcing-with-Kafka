@@ -1,9 +1,7 @@
 using CQRS.Core.Exceptions;
-using CQRS.Core.Infrastructure;
 using Mediator;
 using Microsoft.AspNetCore.Mvc;
 using Post.Cmd.Api.Commands;
-using Post.Cmd.Api.Dtos;
 using Post.Common.Dtos;
 
 namespace Post.Cmd.Api.Controllers;
