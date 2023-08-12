@@ -1,4 +1,5 @@
 ﻿using CQRS.Core.Handlers;
+using Mediator;
 using Post.Cmd.Domain.Aggregates;
 
 namespace Post.Cmd.Api.Commands;
@@ -11,51 +12,58 @@ public class CommandHandler : ICommandHandler
     {
         _eventSourcingHandler = eventSourcingHandler;
     }
-    public async Task HandleAsync(NewPostCommand command)
+    public async ValueTask<Unit> Handle(NewPostCommand command, CancellationToken cancellationToken)
     {
         var aggregate=new PostAggregate(command.Id,command.Author,command.Message);
         await _eventSourcingHandler.SaveAsync(aggregate);
+        return Unit.Value;
     }
 
-    public async Task HandleAsync(EditMessageCommand command)
+    public async ValueTask<Unit> Handle(EditMessageCommand command, CancellationToken cancellationToken)
     {
-      var aggregate=  await _eventSourcingHandler.GetByIdAsync(command.Id);
-      aggregate.EditMessage(command.Message);
-      await _eventSourcingHandler.SaveAsync(aggregate);
+        var aggregate=  await _eventSourcingHandler.GetByIdAsync(command.Id);
+        aggregate.EditMessage(command.Message);
+        await _eventSourcingHandler.SaveAsync(aggregate);
+        return Unit.Value;
     }
 
-    public async Task HandleAsync(LikePostCommand command)
+    public async ValueTask<Unit> Handle(LikePostCommand command, CancellationToken cancellationToken)
     {
         var aggregate = await _eventSourcingHandler.GetByIdAsync(command.Id);
         aggregate.LikePost();
         await _eventSourcingHandler.SaveAsync(aggregate);
+        return Unit.Value;
     }
 
-    public async Task HandleAsync(AddCommentCommand command)
+    public async ValueTask<Unit> Handle(AddCommentCommand command, CancellationToken cancellationToken)
     {
         var aggregate = await _eventSourcingHandler.GetByIdAsync(command.Id);
         aggregate.AddComment(command.Comment,command.UserName);
         await _eventSourcingHandler.SaveAsync(aggregate);
+        return Unit.Value;
     }
 
-    public async Task HandleAsync(EditCommentCommand command)
+    public async ValueTask<Unit> Handle(EditCommentCommand command, CancellationToken cancellationToken)
     {
         var aggregate = await _eventSourcingHandler.GetByIdAsync(command.Id);
         aggregate.EditComment(command.CommentId,command.Comment,command.UserName);
         await _eventSourcingHandler.SaveAsync(aggregate);
+        return Unit.Value;
     }
 
-    public async Task HandleAsync(RemoveCommentCommand command)
+    public async ValueTask<Unit> Handle(RemoveCommentCommand command, CancellationToken cancellationToken)
     {
         var aggregate = await _eventSourcingHandler.GetByIdAsync(command.Id);
         aggregate.RemoveComment(command.CommentId,command.UserName);
         await _eventSourcingHandler.SaveAsync(aggregate);
+        return Unit.Value;
     }
 
-    public async Task HandleAsync(DeletePostCommand command)
+    public async ValueTask<Unit> Handle(DeletePostCommand command, CancellationToken cancellationToken)
     {
         var aggregate = await _eventSourcingHandler.GetByIdAsync(command.Id);
         aggregate.DeletePost(command.UserName);
         await _eventSourcingHandler.SaveAsync(aggregate);
+        return Unit.Value;
     }
 }
