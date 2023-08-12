@@ -14,68 +14,68 @@ public class EventHandler:IEventHandler
         _postRepository = postRepository;
         _commentRepository = commentRepository;
     }
-
-    public async ValueTask Handle(PostCreatedEvent command, CancellationToken cancellationToken)
+    public async Task On(PostCreatedEvent @event)
     {
-       
-            var post = new PostEntity
-            {
-                PostId = command.Id,
-                Author = command.Author,
-                DatePosted = command.DatePosted,
-                Message = command.Message,
-            };
-             await _postRepository.CreateAsync(post);
+        var post = new PostEntity
+        {
+            PostId = @event.Id,
+            Author = @event.Author,
+            DatePosted = @event.DatePosted,
+            Message = @event.Message,
+        };
+       await _postRepository.CreateAsync(post);
     }
 
-    public async ValueTask Handle(MessageUpdatedEvent command, CancellationToken cancellationToken)
+    public async Task On(MessageUpdatedEvent @event)
     {
-        var post =await _postRepository.GetByIdAsync(command.Id);
-        if (post == null) return ;
-        post.Message = command.Message;
+        var post =await _postRepository.GetByIdAsync(@event.Id);
+        if (post == null) return;
+        post.Message = @event.Message;
         await _postRepository.UpdateAsync(post);
+
     }
 
-    public async ValueTask Handle(PostLikedEvent command, CancellationToken cancellationToken)
+    public async Task On(PostLikedEvent @event)
     {
-        var post = await _postRepository.GetByIdAsync(command.Id);
+        var post = await _postRepository.GetByIdAsync(@event.Id);
         if (post == null) return;
         post.Likes++;
         await _postRepository.UpdateAsync(post);
     }
 
-    public async ValueTask Handle(CommentAddedEvent command, CancellationToken cancellationToken)
+    public async Task On(CommentAddedEvent @event)
     {
         var comment = new CommentEntity
         {
-            PostId = command.Id,
-            Comment = command.Comment,
-            CommentDate = command.CommentDate,
-            CommentId = command.CommentId,
+            PostId = @event.Id,
+            Comment = @event.Comment,
+            CommentDate = @event.CommentDate,
+            CommentId = @event.CommentId,
             Edited = false,
-            UserName = command.UserName
+            UserName = @event.UserName
         };
 
         await _commentRepository.CreateAsync(comment);
     }
 
-    public async ValueTask Handle(CommentUpdatedEvent command, CancellationToken cancellationToken)
+    public async Task On(CommentUpdatedEvent @event)
     {
-        var comment=await _commentRepository.GetByIdAsync(command.Id);
+        var comment=await _commentRepository.GetByIdAsync(@event.Id);
         if (comment == null) return;
 
-        comment.CommentDate = command.CommentDate;
+        comment.CommentDate = @event.CommentDate;
         comment.Edited = true;
         await _commentRepository.UpdateAsync(comment);
     }
 
-    public async ValueTask Handle(CommentRemovedEvent command, CancellationToken cancellationToken)
+    public async Task On(CommentRemovedEvent @event)
     {
-        await _commentRepository.DeleteAsync(command.Id);
+        await _commentRepository.DeleteAsync(@event.Id);
+
     }
 
-    public async ValueTask Handle(PostRemovedEvent command, CancellationToken cancellationToken)
+    public async Task On(PostRemovedEvent @event)
     {
-        await _postRepository.DeleteAsync(command.Id);
+       await _postRepository.DeleteAsync(@event.Id);
     }
 }
