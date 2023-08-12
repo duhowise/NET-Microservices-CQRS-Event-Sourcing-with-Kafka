@@ -3,7 +3,7 @@ using Mediator;
 
 namespace Post.Common.Events;
 
-public class CommentRemovedEvent : BaseEvent, ICommand
+public class CommentRemovedEvent : BaseEvent, INotification
 {
     public CommentRemovedEvent() : base(nameof(CommentRemovedEvent))
     {

@@ -3,7 +3,7 @@ using Mediator;
 
 namespace Post.Common.Events;
 
-public class PostCreatedEvent : BaseEvent,ICommand
+public class PostCreatedEvent : BaseEvent,INotification
 {
     public PostCreatedEvent() : base(nameof(PostCreatedEvent))
     {

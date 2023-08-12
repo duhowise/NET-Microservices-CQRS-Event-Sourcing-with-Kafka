@@ -3,7 +3,7 @@ using Mediator;
 
 namespace Post.Common.Events;
 
-public class PostLikedEvent : BaseEvent, ICommand
+public class PostLikedEvent : BaseEvent, INotification
 {
     public PostLikedEvent() : base(nameof(PostLikedEvent))
     {

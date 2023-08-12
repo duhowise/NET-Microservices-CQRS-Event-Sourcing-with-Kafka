@@ -3,10 +3,11 @@ using Post.Common.Events;
 
 namespace Post.Query.Infrastructure.Handlers
 {
-    public interface IEventHandler : ICommandHandler<PostCreatedEvent>,
-        ICommandHandler<MessageUpdatedEvent>,
-        ICommandHandler<PostLikedEvent>, ICommandHandler<CommentAddedEvent>, ICommandHandler<CommentUpdatedEvent>
-        , ICommandHandler<CommentRemovedEvent>, ICommandHandler<PostRemovedEvent>
+    public interface IEventHandler : INotificationHandler<PostCreatedEvent>,
+        INotificationHandler<MessageUpdatedEvent>,
+        INotificationHandler<PostLikedEvent>, INotificationHandler<CommentAddedEvent>,
+        INotificationHandler<CommentUpdatedEvent>
+        , INotificationHandler<CommentRemovedEvent>, INotificationHandler<PostRemovedEvent>
     {
     }
 }

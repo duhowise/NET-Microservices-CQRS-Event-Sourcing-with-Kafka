@@ -3,7 +3,7 @@ using Mediator;
 
 namespace Post.Common.Events;
 
-public class CommentAddedEvent : BaseEvent, ICommand
+public class CommentAddedEvent : BaseEvent, INotification
 {
     public CommentAddedEvent() : base(nameof(CommentAddedEvent))
     {

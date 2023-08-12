@@ -1,7 +1,4 @@
-﻿using CQRS.Core.Domain;
-using CQRS.Core.Handlers;
-using Mediator;
-using Post.Common.Events;
+﻿using Post.Common.Events;
 using Post.Query.Domain.Entities;
 using Post.Query.Domain.Repositories;
 
@@ -18,7 +15,7 @@ public class EventHandler:IEventHandler
         _commentRepository = commentRepository;
     }
 
-    public async ValueTask<Unit> Handle(PostCreatedEvent command, CancellationToken cancellationToken)
+    public async ValueTask Handle(PostCreatedEvent command, CancellationToken cancellationToken)
     {
        
             var post = new PostEntity
@@ -29,28 +26,25 @@ public class EventHandler:IEventHandler
                 Message = command.Message,
             };
              await _postRepository.CreateAsync(post);
-             return Unit.Value;
     }
 
-    public async ValueTask<Unit> Handle(MessageUpdatedEvent command, CancellationToken cancellationToken)
+    public async ValueTask Handle(MessageUpdatedEvent command, CancellationToken cancellationToken)
     {
         var post =await _postRepository.GetByIdAsync(command.Id);
-        if (post == null) return default;
+        if (post == null) return ;
         post.Message = command.Message;
         await _postRepository.UpdateAsync(post);
-        return Unit.Value;
     }
 
-    public async ValueTask<Unit> Handle(PostLikedEvent command, CancellationToken cancellationToken)
+    public async ValueTask Handle(PostLikedEvent command, CancellationToken cancellationToken)
     {
         var post = await _postRepository.GetByIdAsync(command.Id);
-        if (post == null) return default;
+        if (post == null) return;
         post.Likes++;
         await _postRepository.UpdateAsync(post);
-        return Unit.Value;
     }
 
-    public async ValueTask<Unit> Handle(CommentAddedEvent command, CancellationToken cancellationToken)
+    public async ValueTask Handle(CommentAddedEvent command, CancellationToken cancellationToken)
     {
         var comment = new CommentEntity
         {
@@ -63,29 +57,25 @@ public class EventHandler:IEventHandler
         };
 
         await _commentRepository.CreateAsync(comment);
-        return Unit.Value;
     }
 
-    public async ValueTask<Unit> Handle(CommentUpdatedEvent command, CancellationToken cancellationToken)
+    public async ValueTask Handle(CommentUpdatedEvent command, CancellationToken cancellationToken)
     {
         var comment=await _commentRepository.GetByIdAsync(command.Id);
-        if (comment == null) return default;
+        if (comment == null) return;
 
         comment.CommentDate = command.CommentDate;
         comment.Edited = true;
         await _commentRepository.UpdateAsync(comment);
-        return Unit.Value;
     }
 
-    public async ValueTask<Unit> Handle(CommentRemovedEvent command, CancellationToken cancellationToken)
+    public async ValueTask Handle(CommentRemovedEvent command, CancellationToken cancellationToken)
     {
         await _commentRepository.DeleteAsync(command.Id);
-        return Unit.Value;
     }
 
-    public async ValueTask<Unit> Handle(PostRemovedEvent command, CancellationToken cancellationToken)
+    public async ValueTask Handle(PostRemovedEvent command, CancellationToken cancellationToken)
     {
         await _postRepository.DeleteAsync(command.Id);
-        return Unit.Value;
     }
 }

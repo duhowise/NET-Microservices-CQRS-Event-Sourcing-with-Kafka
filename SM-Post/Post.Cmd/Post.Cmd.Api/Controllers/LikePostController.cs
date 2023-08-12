@@ -1,5 +1,6 @@
 using CQRS.Core.Exceptions;
 using CQRS.Core.Infrastructure;
+using Mediator;
 using Microsoft.AspNetCore.Mvc;
 using Post.Cmd.Api.Commands;
 using Post.Common.Dtos;
@@ -11,9 +12,9 @@ namespace Post.Cmd.Api.Controllers;
 public class LikePostController:ControllerBase
 {
     private readonly ILogger<LikePostController> _logger;
-    private readonly ICommandDispatcher _commandDispatcher;
+    private readonly IMediator _commandDispatcher;
 
-    public LikePostController(ILogger<LikePostController>logger, ICommandDispatcher commandDispatcher)
+    public LikePostController(ILogger<LikePostController>logger, IMediator commandDispatcher)
     {
         _logger = logger;
         _commandDispatcher = commandDispatcher;
@@ -24,7 +25,7 @@ public class LikePostController:ControllerBase
     {
         try
         {
-            await  _commandDispatcher.SendAsync(new LikePostCommand
+            await  _commandDispatcher.Send(new LikePostCommand
             {
                 Id = id
             });

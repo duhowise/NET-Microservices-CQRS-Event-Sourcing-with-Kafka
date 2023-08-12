@@ -1,4 +1,5 @@
 using CQRS.Core.Infrastructure;
+using Mediator;
 using Microsoft.AspNetCore.Mvc;
 using Post.Cmd.Api.Commands;
 using Post.Cmd.Api.Dtos;
@@ -10,9 +11,9 @@ namespace Post.Cmd.Api.Controllers;
 public class NewPostController:ControllerBase
 {
     private readonly ILogger<NewPostController> _logger;
-    private readonly ICommandDispatcher _commandDispatcher;
+    private readonly IMediator _commandDispatcher;
 
-    public NewPostController(ILogger<NewPostController>logger,ICommandDispatcher commandDispatcher)
+    public NewPostController(ILogger<NewPostController>logger,IMediator commandDispatcher)
     {
         _logger = logger;
         _commandDispatcher = commandDispatcher;
@@ -25,7 +26,7 @@ public class NewPostController:ControllerBase
         try
         {
             command.Id = id;
-            await _commandDispatcher.SendAsync(command);
+            await _commandDispatcher.Send(command);
             return StatusCode(StatusCodes.Status201Created, new NewPostResponse
             {
                 Id = id,
