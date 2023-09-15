@@ -11,14 +11,15 @@ namespace Post.Query.Infrastructure.Consumers;
 
 public class EventConsumer : IEventConsumer
 {
-    private readonly IEventHandler _eventHandler;
+    private readonly IEventStrategy _eventStrategy;
     private readonly ConsumerConfig _config;
 
-    public EventConsumer(IOptions<ConsumerConfig> config, IEventHandler eventHandler)
+    public EventConsumer(IOptions<ConsumerConfig> config, IEventStrategy eventStrategy)
     {
-        _eventHandler = eventHandler;
+        _eventStrategy = eventStrategy;
         _config = config.Value;
     }
+
     public void Consume(string topic)
     {
         using var consumer = new ConsumerBuilder<string, string>(_config)
@@ -28,19 +29,17 @@ public class EventConsumer : IEventConsumer
         consumer.Subscribe(topic);
         while (true)
         {
-            var consumerResult= consumer.Consume();
-            if(consumerResult?.Message==null) continue;
+            var consumerResult = consumer.Consume();
+            if (consumerResult?.Message == null) continue;
             var options = new JsonSerializerOptions { Converters = { new EventJsonConverter() } };
-            var @event = JsonSerializer.Deserialize<BaseEvent>(consumerResult.Message.Value, options);
-            var handleMethod = _eventHandler.GetType().GetMethod("On", new Type[] { @event.GetType() });
-            if (handleMethod==null)
+            var baseEvent = JsonSerializer.Deserialize<BaseEvent>(consumerResult.Message.Value, options);
+            var handler = _eventStrategy.GetHandler(baseEvent);
+            if (handler == null)
             {
-                throw new ArgumentNullException(nameof(handleMethod), "could not find event handler method!");
+                throw new ArgumentNullException(nameof(handler), "could not find event handler method!");
             }
-
-            handleMethod.Invoke(_eventHandler, new object[] { @event });
+            handler.On(baseEvent);
             consumer.Commit(consumerResult);
-
         }
     }
 }

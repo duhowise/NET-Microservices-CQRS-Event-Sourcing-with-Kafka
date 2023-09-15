@@ -1,15 +1,9 @@
-﻿using Post.Common.Events;
+﻿using CQRS.Core.Events;
 
 namespace Post.Query.Infrastructure.Handlers
 {
-    public interface IEventHandler
+    public interface IEventHandler<in TEvent>
     {
-        Task On(PostCreatedEvent @event);
-        Task On(MessageUpdatedEvent @event);
-        Task On(PostLikedEvent @event);
-        Task On(CommentAddedEvent @event);
-        Task On(CommentUpdatedEvent @event);
-        Task On(CommentRemovedEvent @event);
-        Task On(PostRemovedEvent @event);
+        Task On(TEvent @event);
     }
 }

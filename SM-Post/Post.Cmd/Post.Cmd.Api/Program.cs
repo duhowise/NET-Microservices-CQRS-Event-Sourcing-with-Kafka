@@ -1,4 +1,5 @@
 using Confluent.Kafka;
+using CQRS.Core.Consumers;
 using CQRS.Core.Domain;
 using CQRS.Core.Events;
 using CQRS.Core.Handlers;
@@ -14,6 +15,8 @@ using Post.Cmd.Infrastructure.Producers;
 using Post.Cmd.Infrastructure.Repositories;
 using Post.Cmd.Infrastructure.Stores;
 using Post.Common.Events;
+using Post.Query.Infrastructure.Consumers;
+using Post.Query.Infrastructure.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 BsonClassMap.RegisterClassMap<BaseEvent>();
@@ -34,7 +37,15 @@ builder.Services.Configure<MongoDbConfig>(builder.Configuration.GetSection(nameo
 builder.Services.Configure<ProducerConfig>(builder.Configuration.GetSection(nameof(ProducerConfig)));
 builder.Services.AddScoped<IEventStoreRepository, EventStoreRepository>();
 builder.Services.AddScoped<IEventProducer, EventProducer>();
-builder.Services.AddScoped<IEventStore, EventStore>();
+builder.Services.AddScoped<IEventConsumer, EventConsumer>();
+builder.Services.AddSingleton<IEventStrategy, EventStrategy>();
+builder.Services.AddScoped<IEventHandler<CommentAddedEvent>, CommentAddedEventHandler>();
+builder.Services.AddScoped<IEventHandler<CommentRemovedEvent>, CommentRemovedEventHandler>();
+builder.Services.AddScoped<IEventHandler<CommentUpdatedEvent>, CommentUpdatedEventHandler>();
+builder.Services.AddScoped<IEventHandler<PostCreatedEvent>, PostCreatedEventHandler>();
+builder.Services.AddScoped<IEventHandler<PostLikedEvent>, PostLikedEventHandler>();
+builder.Services.AddScoped<IEventHandler<PostRemovedEvent>, PostRemovedEventHandler>();
+builder.Services.AddScoped<IEventHandler<MessageUpdatedEvent>, MessageUpdatedEventHandler>();builder.Services.AddScoped<IEventStore, EventStore>();
 builder.Services.AddScoped<IEventSourcingHandler<PostAggregate>, EventSourcingHandler>();
 builder.Services.AddScoped<ICommandHandler,CommandHandler>();
 

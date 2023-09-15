@@ -22,4 +22,10 @@
     <Folder Include="DataAccess\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Post.Query.Infrastructure">
+      <HintPath>..\Post.Query.Api\bin\Debug\net6.0\Post.Query.Infrastructure.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
