@@ -1,41 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Confluent.Kafka;
-using CQRS.Core.Events;
-using CQRS.Core.Producers;
-using Microsoft.Extensions.Options;
+﻿using CQRS.Core.Producers;
+using Messaging.Rabbitmq.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Post.Cmd.Infrastructure.Producers
 {
-    public class EventProducer:IEventProducer
+    public class EventProducer :IEventProducer
     {
-        private readonly ProducerConfig _config;
+        private readonly IServiceProvider _serviceProvider;
 
-        public EventProducer(IOptions<ProducerConfig>config)
+        public EventProducer(IServiceProvider serviceProvider)
         {
-            _config = config.Value;
+            _serviceProvider = serviceProvider;
         }
-        public async Task ProduceAsync<T>(string topic, T @event) where T : BaseEvent
+        public Task ProduceAsync<T>(T message) where T:IQueueMessage  
         {
-            using var producer = new ProducerBuilder<string, string>(_config)
-                .SetKeySerializer(Serializers.Utf8)
-                .SetValueSerializer(Serializers.Utf8)
-                .Build();
-            var eventMessage = new Message<string, string>()
-            {
-                Key = Guid.NewGuid().ToString(),
-                Value = JsonSerializer.Serialize(@event, @event.GetType())
-            };
-            var deliveryResult = await producer.ProduceAsync(topic, eventMessage);
-            if (deliveryResult.Status==PersistenceStatus.NotPersisted)
-            {
-                throw new Exception(
-                    $"Could not produce {@event.GetType().Name} message to topic - {topic} due to the following reason: {deliveryResult.Message}");
-            }
+            var queueProducer = _serviceProvider.GetRequiredService<IQueueProducer<T>>();
+            queueProducer.PublishMessage(message);
+            return Task.CompletedTask;
         }
     }
 }

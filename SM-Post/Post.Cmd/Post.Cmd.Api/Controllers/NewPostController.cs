@@ -18,13 +18,18 @@ public class NewPostController:ControllerBase
         _commandDispatcher = commandDispatcher;
     }
 [HttpPost("")]
-    public async Task<IActionResult> NewPostAsync(NewPostCommand command)
+    public async Task<IActionResult> NewPostAsync(string message, string author)
     {
         var id = Guid.NewGuid();
 
         try
         {
-            command.Id = id;
+            var command = new NewPostCommand
+            {
+                Message = message,
+                Author = author,
+                Id = id
+            };
             await _commandDispatcher.SendAsync(command);
             return StatusCode(StatusCodes.Status201Created, new NewPostResponse
             {

@@ -32,7 +32,7 @@ namespace Messaging.Rabbitmq.Implementation
 
         public void RegisterQueueConsumer()
         {
-            _logger.LogInformation($"Registering {_consumerName} as a consumer for Queue {_queueName}");
+            _logger.LogInformation("Registering {ConsumerName} as a consumer for Queue {QueueName}",_consumerName,_queueName);
 
             var scope = _serviceProvider.CreateScope();
 
@@ -94,7 +94,7 @@ namespace Messaging.Rabbitmq.Implementation
                 // Serialize the message
                 var message = DeserializeMessage(ea.Body.ToArray());
 
-                _logger.LogInformation($"MessageID '{message.MessageId}'");
+                _logger.LogInformation($"MessageID '{message.Id}'");
 
                 // Start a transaction which will contain all messages produced by this consumer
                 producingChannel.TxSelect();

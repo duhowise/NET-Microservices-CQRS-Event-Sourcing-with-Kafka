@@ -25,7 +25,6 @@ builder.Services.AddScoped<IPostRepository,PostRepository>();
 builder.Services.AddScoped<ICommentRepository,CommentRepository>();
 builder.Services.AddScoped<IEventHandler,EventHandler>();
 builder.Services.Configure<ConsumerConfig>(builder.Configuration.GetSection(nameof(ConsumerConfig)));
-builder.Services.AddScoped<IEventConsumer, EventConsumer>();
 builder.Services.AddQueueing(new QueueingConfigurationSettings
 {
     RabbitMqConsumerConcurrency = 5,
@@ -34,6 +33,8 @@ builder.Services.AddQueueing(new QueueingConfigurationSettings
     RabbitMqPassword = "guest",
     RabbitMqUsername = "guest"
 });
+// builder.Services.AddQueueMessageConsumer<>();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -19,4 +19,8 @@
     <Folder Include="Producers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\SM-Post\CQRS.Core.Infrastructure\CQRS.Core.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,9 +1,10 @@
 ﻿using System.Threading.Tasks;
 using CQRS.Core.Events;
+using Messaging.Rabbitmq.Interfaces;
 
 namespace CQRS.Core.Producers;
 
-public interface IEventProducer
+public interface IEventProducer 
 {
-    Task ProduceAsync<T>(string topic,T @event) where T:BaseEvent;
+    Task ProduceAsync<T>(T @event)where T:IQueueMessage;
 }
