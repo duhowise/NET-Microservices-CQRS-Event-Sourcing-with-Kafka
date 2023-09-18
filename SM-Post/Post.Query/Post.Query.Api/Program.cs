@@ -1,6 +1,8 @@
 using Confluent.Kafka;
 using CQRS.Core.Consumers;
 using CQRS.Core.Handlers;
+using Messaging.Rabbitmq.Extensions;
+using Messaging.Rabbitmq.Implementation;
 using Microsoft.EntityFrameworkCore;
 using Post.Query.Domain.Repositories;
 using Post.Query.Infrastructure.Consumers;
@@ -24,7 +26,14 @@ builder.Services.AddScoped<ICommentRepository,CommentRepository>();
 builder.Services.AddScoped<IEventHandler,EventHandler>();
 builder.Services.Configure<ConsumerConfig>(builder.Configuration.GetSection(nameof(ConsumerConfig)));
 builder.Services.AddScoped<IEventConsumer, EventConsumer>();
-builder.Services.AddHostedService<ConsumerHostedService>();
+builder.Services.AddQueueing(new QueueingConfigurationSettings
+{
+    RabbitMqConsumerConcurrency = 5,
+    RabbitMqHostname = "localhost",
+    RabbitMqPort = 5672,
+    RabbitMqPassword = "guest",
+    RabbitMqUsername = "guest"
+});
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Post.Query.Infrastructure",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Post.Common", "Post.Common\Post.Common.csproj", "{0B7BB007-286B-4B86-8033-E425386708BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRS.Core.Messaging", "CQRS.Core.Messaging\CQRS.Core.Messaging.csproj", "{76EDA001-B2D8-4B12-8360-DC9A17448576}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CQRS.Core.Infrastructure", "CQRS.Core.Infrastructure\CQRS.Core.Infrastructure.csproj", "{76EDA001-B2D8-4B12-8360-DC9A17448576}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
