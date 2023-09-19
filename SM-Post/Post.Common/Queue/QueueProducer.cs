@@ -1,15 +1,15 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text;
+using System.Text.Json;
 using Messaging.Rabbitmq.Exceptions;
 using Messaging.Rabbitmq.Interfaces;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+using MongoDB.Bson.IO;
 using RabbitMQ.Client;
 
-namespace Messaging.Rabbitmq.Implementation
+namespace Post.Common.Queue
 {
-    internal class QueueProducer<TQueueMessage> : IQueueProducer<TQueueMessage> where TQueueMessage : IQueueMessage
+    public class QueueProducer<TQueueMessage> : IQueueProducer<TQueueMessage> where TQueueMessage : IQueueMessage
     {
         private readonly ILogger<QueueProducer<TQueueMessage>> _logger;
         private readonly string _queueName;
@@ -57,7 +57,10 @@ namespace Messaging.Rabbitmq.Implementation
 
         private static byte[] SerializeMessage(TQueueMessage message)
         {
-            var stringContent = JsonConvert.SerializeObject(message);
+            var stringContent = JsonSerializer.Serialize(message,new JsonSerializerOptions()
+            {
+                Converters = { new Post.Common.Converter.EventJsonConverter() }
+            });
             return Encoding.UTF8.GetBytes(stringContent);
         }
     }

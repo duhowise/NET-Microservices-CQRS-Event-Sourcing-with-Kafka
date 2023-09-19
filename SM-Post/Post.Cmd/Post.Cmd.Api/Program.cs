@@ -16,6 +16,7 @@ using Post.Cmd.Infrastructure.Producers;
 using Post.Cmd.Infrastructure.Repositories;
 using Post.Cmd.Infrastructure.Stores;
 using Post.Common.Events;
+using Post.Common.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 BsonClassMap.RegisterClassMap<BaseEvent>();
@@ -63,6 +64,7 @@ dispatcher.RegisterHandler<RemoveCommentCommand>(commandHandler.HandleAsync);
 dispatcher.RegisterHandler<DeletePostCommand>(commandHandler.HandleAsync);
 
 builder.Services.AddSingleton<ICommandDispatcher>(_ => dispatcher);
+builder.Services.AddQueueProducers();
 
 var app = builder.Build();
 

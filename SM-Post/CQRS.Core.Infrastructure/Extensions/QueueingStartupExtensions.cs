@@ -42,7 +42,6 @@ namespace Messaging.Rabbitmq.Extensions
             services.AddScoped<IChannelProvider, ChannelProvider>();
             services.AddScoped(typeof(IQueueChannelProvider<>), typeof(QueueChannelProvider<>));
 
-            services.AddScoped(typeof(IQueueProducer<>), typeof(QueueProducer<>));
         }
         public static void AddQueueMessageConsumer<TMessageConsumer, TQueueMessage>(this IServiceCollection services) where TMessageConsumer : IQueueConsumer<TQueueMessage> where TQueueMessage : class, IQueueMessage
         {

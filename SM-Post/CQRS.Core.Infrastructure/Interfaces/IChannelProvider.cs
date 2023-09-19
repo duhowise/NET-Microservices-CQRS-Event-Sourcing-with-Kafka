@@ -2,7 +2,7 @@
 
 namespace Messaging.Rabbitmq.Interfaces
 {
-    internal interface IChannelProvider
+    public interface IChannelProvider
     {
         IModel GetChannel();
     }

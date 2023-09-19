@@ -1,10 +1,9 @@
-﻿using System;
-using System.Text.Json;
+﻿using System.Text.Json;
 using Confluent.Kafka;
 using CQRS.Core.Consumers;
 using CQRS.Core.Events;
 using Microsoft.Extensions.Options;
-using Post.Query.Infrastructure.Converter;
+using Post.Common.Converter;
 using Post.Query.Infrastructure.Handlers;
 
 namespace Post.Query.Infrastructure.Consumers;

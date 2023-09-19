@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Messaging.Rabbitmq.Exceptions;
 using Messaging.Rabbitmq.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -160,7 +160,7 @@ namespace Messaging.Rabbitmq.Implementation
         private static TQueueMessage DeserializeMessage(byte[] message)
         {
             var stringMessage = Encoding.UTF8.GetString(message);
-            return JsonConvert.DeserializeObject<TQueueMessage>(stringMessage);
+            return JsonSerializer.Deserialize<TQueueMessage>(stringMessage);
         }
     }
 }
