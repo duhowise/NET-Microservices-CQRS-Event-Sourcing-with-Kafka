@@ -26,22 +26,15 @@ namespace Post.Common.Queue
         {
             if (Equals(message, default(TQueueMessage))) throw new ArgumentNullException(nameof(message));
 
-            if (message.TimeToLive.Ticks <= 0) throw new QueueingException($"{nameof(message.TimeToLive)} cannot be zero or negative");
-
-            // Set message ID
-            message.Id = Guid.NewGuid();
-
             try
             {
-                _logger.LogInformation($"Publising message to Queue '{_queueName}' with TTL {message.TimeToLive.TotalMilliseconds}");
+                _logger.LogInformation("Publising message to Queue {QueueName}",_queueName);
 
                 var serializedMessage = SerializeMessage(message);
 
                 var properties = _channel.CreateBasicProperties();
                 properties.Persistent = true;
                 properties.Type = _queueName;
-                properties.Expiration = message.TimeToLive.TotalMilliseconds.ToString(CultureInfo.InvariantCulture);
-
                 _channel.BasicPublish(_queueName, _queueName, properties, serializedMessage);
 
                 _logger.LogDebug(

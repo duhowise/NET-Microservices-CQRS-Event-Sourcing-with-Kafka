@@ -9,6 +9,7 @@ using Post.Common.Extensions;
 using Post.Query.Domain.Repositories;
 using Post.Query.Infrastructure.Consumers;
 using Post.Query.Infrastructure.DataAccess;
+using Post.Query.Infrastructure.Extensions;
 using Post.Query.Infrastructure.Handlers;
 using Post.Query.Infrastructure.Repositories;
 using EventHandler = Post.Query.Infrastructure.Handlers.EventHandler;
@@ -35,8 +36,7 @@ builder.Services.AddQueueing(new QueueingConfigurationSettings
     RabbitMqPassword = "guest",
     RabbitMqUsername = "guest"
 });
-builder.Services.AddQueueMessageConsumer<PostCreatedEventConsumer, PostCreatedEvent>();
-builder.Services.AddQueueProducers();
+builder.Services.AddQueueConsumers();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

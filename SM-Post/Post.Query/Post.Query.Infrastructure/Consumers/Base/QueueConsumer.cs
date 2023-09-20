@@ -6,17 +6,15 @@ using Microsoft.Extensions.Options;
 using Post.Common.Converter;
 using Post.Query.Infrastructure.Handlers;
 
-namespace Post.Query.Infrastructure.Consumers;
+namespace Post.Query.Infrastructure.Consumers.Base;
 
-public class EventConsumer<TEvent> : IQueueConsumer<TEvent> where TEvent : BaseEvent
+public class QueueConsumer<TEvent> : IQueueConsumer<TEvent> where TEvent : BaseEvent
 {
     private readonly IEventHandler _eventHandler;
-    private readonly ConsumerConfig _config;
 
-    public EventConsumer(IOptions<ConsumerConfig> config, IEventHandler eventHandler)
+    protected QueueConsumer(IEventHandler eventHandler)
     {
         _eventHandler = eventHandler;
-        _config = config.Value;
     }
 
     public Task ConsumeAsync(TEvent message)
