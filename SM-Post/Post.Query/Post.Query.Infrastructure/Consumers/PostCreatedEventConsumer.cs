@@ -1,27 +1,23 @@
-﻿using System.Text.Json;
-using Confluent.Kafka;
+using System.Text.Json;
 using CQRS.Core.Events;
 using Messaging.Rabbitmq.Interfaces;
-using Microsoft.Extensions.Options;
 using Post.Common.Converter;
+using Post.Common.Events;
 using Post.Query.Infrastructure.Handlers;
 
 namespace Post.Query.Infrastructure.Consumers;
 
-public class EventConsumer<TEvent> : IQueueConsumer<TEvent> where TEvent : BaseEvent
+public class PostCreatedEventConsumer : IQueueConsumer<PostCreatedEvent>
 {
     private readonly IEventHandler _eventHandler;
-    private readonly ConsumerConfig _config;
 
-    public EventConsumer(IOptions<ConsumerConfig> config, IEventHandler eventHandler)
+    public PostCreatedEventConsumer(IEventHandler eventHandler)
     {
         _eventHandler = eventHandler;
-        _config = config.Value;
     }
 
-    public Task ConsumeAsync(TEvent message)
+    public Task ConsumeAsync(PostCreatedEvent message)
     {
-        var options = new JsonSerializerOptions { Converters = { new EventJsonConverter() } };
         var handleMethod = _eventHandler.GetType().GetMethod("On", new Type[] { message.GetType() });
         if (handleMethod==null)
         {

@@ -46,7 +46,7 @@ public class EventStore:IEventStore
                 };
 
                 await _eventStoreRepository.SaveAsync(eventModel);
-                await _eventProducer.ProduceAsync(@event);
+                await _eventProducer.ProduceAsync((dynamic)@event);
             }
         }
         catch (Exception e)

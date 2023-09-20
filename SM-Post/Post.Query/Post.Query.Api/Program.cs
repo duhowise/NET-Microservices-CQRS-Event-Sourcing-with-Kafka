@@ -4,6 +4,7 @@ using CQRS.Core.Handlers;
 using Messaging.Rabbitmq.Extensions;
 using Messaging.Rabbitmq.Implementation;
 using Microsoft.EntityFrameworkCore;
+using Post.Common.Events;
 using Post.Common.Extensions;
 using Post.Query.Domain.Repositories;
 using Post.Query.Infrastructure.Consumers;
@@ -34,7 +35,7 @@ builder.Services.AddQueueing(new QueueingConfigurationSettings
     RabbitMqPassword = "guest",
     RabbitMqUsername = "guest"
 });
-// builder.Services.AddQueueMessageConsumer<>();
+builder.Services.AddQueueMessageConsumer<PostCreatedEventConsumer, PostCreatedEvent>();
 builder.Services.AddQueueProducers();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

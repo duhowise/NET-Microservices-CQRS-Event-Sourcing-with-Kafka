@@ -44,6 +44,8 @@ builder.Services.AddQueueing(new QueueingConfigurationSettings
     RabbitMqPassword = "guest",
     RabbitMqUsername = "guest"
 });
+builder.Services.AddQueueProducers();
+
 builder.Services.AddScoped<IEventProducer, EventProducer>();
 builder.Services.AddScoped<IEventStore, EventStore>();
 builder.Services.AddScoped<IEventSourcingHandler<PostAggregate>, EventSourcingHandler>();
@@ -64,7 +66,6 @@ dispatcher.RegisterHandler<RemoveCommentCommand>(commandHandler.HandleAsync);
 dispatcher.RegisterHandler<DeletePostCommand>(commandHandler.HandleAsync);
 
 builder.Services.AddSingleton<ICommandDispatcher>(_ => dispatcher);
-builder.Services.AddQueueProducers();
 
 var app = builder.Build();
 
