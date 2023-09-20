@@ -11,7 +11,7 @@ using RabbitMQ.Client.Events;
 
 namespace Messaging.Rabbitmq.Implementation
 {
-    internal class QueueConsumerHandler<TMessageConsumer, TQueueMessage> : IQueueConsumerHandler<TMessageConsumer, TQueueMessage> where TMessageConsumer : IQueueConsumer<TQueueMessage> where TQueueMessage : class, IQueueMessage
+    public class QueueConsumerHandler<TMessageConsumer, TQueueMessage> : IQueueConsumerHandler<TMessageConsumer, TQueueMessage> where TMessageConsumer : IQueueConsumer<TQueueMessage> where TQueueMessage : class, IQueueMessage
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<QueueConsumerHandler<TMessageConsumer, TQueueMessage>> _logger;

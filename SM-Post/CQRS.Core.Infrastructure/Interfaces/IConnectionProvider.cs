@@ -2,7 +2,7 @@
 
 namespace Messaging.Rabbitmq.Interfaces
 {
-    internal interface IConnectionProvider
+    public interface IConnectionProvider
     {
         IConnection GetConnection();
     }

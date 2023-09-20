@@ -10,6 +10,7 @@ using Messaging.Rabbitmq.Implementation;
 using MongoDB.Bson.Serialization;
 using Post.Cmd.Api.Commands;
 using Post.Cmd.Domain.Aggregates;
+using Post.Cmd.Infrastructure;
 using Post.Cmd.Infrastructure.Config;
 using Post.Cmd.Infrastructure.Handlers;
 using Post.Cmd.Infrastructure.Producers;

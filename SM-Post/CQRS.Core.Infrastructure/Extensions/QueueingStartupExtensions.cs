@@ -1,6 +1,9 @@
-﻿using Messaging.Rabbitmq.Implementation;
+﻿using System;
+using System.Reflection;
+using Messaging.Rabbitmq.Implementation;
 using Messaging.Rabbitmq.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
 
 namespace Messaging.Rabbitmq.Extensions
@@ -49,5 +52,7 @@ namespace Messaging.Rabbitmq.Extensions
             services.AddScoped<IQueueConsumerHandler<TMessageConsumer, TQueueMessage>, QueueConsumerHandler<TMessageConsumer, TQueueMessage>>();
             services.AddHostedService<QueueConsumerRegistratorService<TMessageConsumer, TQueueMessage>>();
         }
+       
     }
+    
 }

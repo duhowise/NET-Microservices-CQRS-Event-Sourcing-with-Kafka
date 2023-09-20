@@ -1,6 +1,6 @@
 using Messaging.Rabbitmq.Interfaces;
+using Post.Common.Base;
 using Post.Common.Events;
-using Post.Query.Infrastructure.Consumers.Base;
 using Post.Query.Infrastructure.Handlers;
 
 namespace Post.Query.Infrastructure.Consumers;

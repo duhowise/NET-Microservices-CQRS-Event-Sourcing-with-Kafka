@@ -1,6 +1,6 @@
 using Messaging.Rabbitmq.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using Post.Query.Infrastructure.Consumers.Base;
+using Post.Common.Base;
 
 namespace Post.Query.Infrastructure.Extensions;
 

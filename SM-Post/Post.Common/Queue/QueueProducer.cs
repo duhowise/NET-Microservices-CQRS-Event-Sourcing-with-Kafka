@@ -28,7 +28,7 @@ namespace Post.Common.Queue
 
             try
             {
-                _logger.LogInformation("Publising message to Queue {QueueName}",_queueName);
+                _logger.LogInformation("Publishing message to Queue {QueueName}",_queueName);
 
                 var serializedMessage = SerializeMessage(message);
 

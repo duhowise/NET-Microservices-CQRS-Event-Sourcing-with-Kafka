@@ -5,7 +5,7 @@ using RabbitMQ.Client;
 
 namespace Messaging.Rabbitmq.Implementation
 {
-    internal sealed class ConnectionProvider : IDisposable, IConnectionProvider
+    public sealed class ConnectionProvider : IDisposable, IConnectionProvider
     {
         private readonly ILogger<ConnectionProvider> _logger;
         private readonly IAsyncConnectionFactory _connectionFactory;

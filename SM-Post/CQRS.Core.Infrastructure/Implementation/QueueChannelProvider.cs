@@ -5,7 +5,7 @@ using RabbitMQ.Client;
 
 namespace Messaging.Rabbitmq.Implementation
 {
-    internal class QueueChannelProvider<TQueueMessage> : IQueueChannelProvider<TQueueMessage> where TQueueMessage : IQueueMessage
+    public class QueueChannelProvider<TQueueMessage> : IQueueChannelProvider<TQueueMessage> where TQueueMessage : IQueueMessage
     {
         private readonly IChannelProvider _channelProvider;
         private IModel _channel;

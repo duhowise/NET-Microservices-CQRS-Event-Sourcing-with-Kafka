@@ -1,11 +1,11 @@
 using Confluent.Kafka;
-using CQRS.Core.Consumers;
-using CQRS.Core.Handlers;
 using Messaging.Rabbitmq.Extensions;
 using Messaging.Rabbitmq.Implementation;
+using Messaging.Rabbitmq.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Post.Cmd.Infrastructure;
+using Post.Common.Base;
 using Post.Common.Events;
-using Post.Common.Extensions;
 using Post.Query.Domain.Repositories;
 using Post.Query.Infrastructure.Consumers;
 using Post.Query.Infrastructure.DataAccess;
@@ -36,7 +36,13 @@ builder.Services.AddQueueing(new QueueingConfigurationSettings
     RabbitMqPassword = "guest",
     RabbitMqUsername = "guest"
 });
-builder.Services.AddQueueConsumers();
+builder.Services.AddQueueMessageConsumer<CommentAddedQueueConsumer, CommentAddedEvent>();
+builder.Services.AddQueueMessageConsumer<CommentRemovedQueueConsumer, CommentRemovedEvent>();
+builder.Services.AddQueueMessageConsumer<CommentUpdatedQueueConsumer, CommentUpdatedEvent>();
+builder.Services.AddQueueMessageConsumer<MessageUpdatedQueueConsumer,MessageUpdatedEvent>();
+builder.Services.AddQueueMessageConsumer<PostCreatedQueueConsumer, PostCreatedEvent>();
+builder.Services.AddQueueMessageConsumer<PostLikedQueueConsumer, PostLikedEvent>();
+builder.Services.AddQueueMessageConsumer<PostRemovedQueueConsumer, PostRemovedEvent>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
