@@ -1,16 +1,12 @@
 using Confluent.Kafka;
 using Messaging.Rabbitmq.Extensions;
 using Messaging.Rabbitmq.Implementation;
-using Messaging.Rabbitmq.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Post.Cmd.Infrastructure;
 using Post.Common.Base;
 using Post.Common.Events;
 using Post.Query.Domain.Repositories;
 using Post.Query.Infrastructure.Consumers;
 using Post.Query.Infrastructure.DataAccess;
-using Post.Query.Infrastructure.Extensions;
-using Post.Query.Infrastructure.Handlers;
 using Post.Query.Infrastructure.Repositories;
 using EventHandler = Post.Query.Infrastructure.Handlers.EventHandler;
 

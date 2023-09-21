@@ -1,7 +1,5 @@
-﻿using System.Text.Json;
-using CQRS.Core.Events;
+﻿using CQRS.Core.Events;
 using Messaging.Rabbitmq.Interfaces;
-using Post.Common.Converter;
 
 namespace Post.Common.Base;
 

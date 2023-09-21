@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using CQRS.Core.Events;
 using Messaging.Rabbitmq.Interfaces;
 
 namespace CQRS.Core.Producers;

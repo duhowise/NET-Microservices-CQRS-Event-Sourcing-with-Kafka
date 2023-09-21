@@ -1,10 +1,8 @@
-﻿using System.Globalization;
-using System.Text;
+﻿using System.Text;
 using System.Text.Json;
 using Messaging.Rabbitmq.Exceptions;
 using Messaging.Rabbitmq.Interfaces;
 using Microsoft.Extensions.Logging;
-using MongoDB.Bson.IO;
 using RabbitMQ.Client;
 
 namespace Post.Common.Queue

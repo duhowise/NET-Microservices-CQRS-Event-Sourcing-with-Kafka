@@ -1,9 +1,6 @@
-﻿using System;
-using System.Reflection;
-using Messaging.Rabbitmq.Implementation;
+﻿using Messaging.Rabbitmq.Implementation;
 using Messaging.Rabbitmq.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
 
 namespace Messaging.Rabbitmq.Extensions
