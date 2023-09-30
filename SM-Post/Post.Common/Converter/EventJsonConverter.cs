@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using CQRS.Core.Events;
 using Post.Common.Events;
 
-namespace Post.Query.Infrastructure.Converter
+namespace Post.Common.Converter
 {
     public class EventJsonConverter : JsonConverter<BaseEvent>
     {
@@ -46,7 +41,32 @@ namespace Post.Query.Infrastructure.Converter
 
         public override void Write(Utf8JsonWriter writer, BaseEvent value, JsonSerializerOptions options)
         {
-            throw new NotImplementedException();
+            switch (value)
+            {
+                case PostCreatedEvent postCreatedEvent:
+                    JsonSerializer.Serialize(writer, postCreatedEvent, postCreatedEvent.GetType(), options);
+                    break;
+                case MessageUpdatedEvent messageUpdatedEvent:
+                    JsonSerializer.Serialize(writer, messageUpdatedEvent, messageUpdatedEvent.GetType(), options);
+                    break;
+                case PostLikedEvent postLikedEvent:
+                    JsonSerializer.Serialize(writer, postLikedEvent, postLikedEvent.GetType(), options);
+                    break;
+                case CommentAddedEvent commentAddedEvent:
+                    JsonSerializer.Serialize(writer, commentAddedEvent, commentAddedEvent.GetType(), options);
+                    break;
+                case CommentUpdatedEvent commentUpdatedEvent:
+                    JsonSerializer.Serialize(writer, commentUpdatedEvent, commentUpdatedEvent.GetType(), options);
+                    break;
+                case CommentRemovedEvent commentRemovedEvent:
+                    JsonSerializer.Serialize(writer, commentRemovedEvent, commentRemovedEvent.GetType(), options);
+                    break;
+                case PostRemovedEvent postRemovedEvent:
+                    JsonSerializer.Serialize(writer, postRemovedEvent, postRemovedEvent.GetType(), options);
+                    break;
+                default:
+                    throw new NotSupportedException($"Serialization is not supported for the type: {value.GetType()}");
+            }
         }
     }
 }

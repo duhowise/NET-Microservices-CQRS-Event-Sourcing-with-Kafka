@@ -8,28 +8,28 @@ namespace Post.Cmd.Api.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-public class EditMessageController : ControllerBase
+public class AddCommentController:ControllerBase
 {
-    private readonly ILogger<EditMessageController> _logger;
+    private readonly ILogger<AddCommentController> _logger;
     private readonly ICommandDispatcher _commandDispatcher;
 
-    public EditMessageController(ILogger<EditMessageController>logger, ICommandDispatcher commandDispatcher)
+    public AddCommentController(ILogger<AddCommentController>logger, ICommandDispatcher commandDispatcher)
     {
         _logger = logger;
         _commandDispatcher = commandDispatcher;
     }
 
 
- [HttpPut("{id}")]   public async Task<ActionResult> EditMessageAsync(Guid id, EditMessageCommand command)
+    [HttpPut("{id}")]   public async Task<ActionResult> AddCommentAsync(Guid id, AddCommentCommand command)
     {
         try
         {
             command.Id = id;
-          await  _commandDispatcher.SendAsync(command);
-          return Ok(new BaseResponse
-          {
-              Message = "Edit message request completed successfully"
-          });
+            await  _commandDispatcher.SendAsync(command);
+            return Ok(new BaseResponse
+            {
+                Message = "add comment request completed successfully"
+            });
 
         }
         catch (InvalidOperationException e)
@@ -41,7 +41,7 @@ public class EditMessageController : ControllerBase
             });
         } catch (AggregateNotFoundException e)
         {
-            _logger.Log(LogLevel.Warning, e, "could not retrieve the aggregate, client passed an incorrect podt Id targeting the aggregate!");
+            _logger.Log(LogLevel.Warning, e, "could not retrieve the aggregate, client passed an incorrect post Id targeting the aggregate!");
             return BadRequest(new BaseResponse
             {
                 Message = e.Message
@@ -49,7 +49,7 @@ public class EditMessageController : ControllerBase
         }
         catch (Exception exception)
         {
-            const string SAFE_ERROR_MESSAGE = "Error while processing request to edit the message of a post!";
+            const string SAFE_ERROR_MESSAGE = "Error while processing request to add comment to a post!";
             _logger.Log(LogLevel.Error,SAFE_ERROR_MESSAGE);
             return StatusCode(StatusCodes.Status500InternalServerError, new BaseResponse
             {
@@ -57,5 +57,4 @@ public class EditMessageController : ControllerBase
             });
         }
     }
-
 }

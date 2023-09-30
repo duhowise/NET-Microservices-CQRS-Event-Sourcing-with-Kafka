@@ -5,6 +5,8 @@ using CQRS.Core.Handlers;
 using CQRS.Core.Infrastructure;
 using CQRS.Core.Infrastructure.Dispatchers;
 using CQRS.Core.Producers;
+using Messaging.Rabbitmq.Extensions;
+using Messaging.Rabbitmq.Implementation;
 using MongoDB.Bson.Serialization;
 using Post.Cmd.Api.Commands;
 using Post.Cmd.Domain.Aggregates;
@@ -14,6 +16,7 @@ using Post.Cmd.Infrastructure.Producers;
 using Post.Cmd.Infrastructure.Repositories;
 using Post.Cmd.Infrastructure.Stores;
 using Post.Common.Events;
+using Post.Common.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 BsonClassMap.RegisterClassMap<BaseEvent>();
@@ -33,6 +36,16 @@ builder.Services.AddSwaggerGen();
 builder.Services.Configure<MongoDbConfig>(builder.Configuration.GetSection(nameof(MongoDbConfig)));
 builder.Services.Configure<ProducerConfig>(builder.Configuration.GetSection(nameof(ProducerConfig)));
 builder.Services.AddScoped<IEventStoreRepository, EventStoreRepository>();
+builder.Services.AddQueueing(new QueueingConfigurationSettings
+{
+    RabbitMqConsumerConcurrency = 5,
+    RabbitMqHostname = "localhost",
+    RabbitMqPort = 5672,
+    RabbitMqPassword = "guest",
+    RabbitMqUsername = "guest"
+});
+builder.Services.AddQueueProducers();
+
 builder.Services.AddScoped<IEventProducer, EventProducer>();
 builder.Services.AddScoped<IEventStore, EventStore>();
 builder.Services.AddScoped<IEventSourcingHandler<PostAggregate>, EventSourcingHandler>();

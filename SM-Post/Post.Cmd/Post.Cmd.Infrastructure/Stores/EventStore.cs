@@ -1,5 +1,4 @@
-﻿using System.Data;
-using CQRS.Core.Domain;
+﻿using CQRS.Core.Domain;
 using CQRS.Core.Events;
 using CQRS.Core.Exceptions;
 using CQRS.Core.Infrastructure;
@@ -46,8 +45,7 @@ public class EventStore:IEventStore
                 };
 
                 await _eventStoreRepository.SaveAsync(eventModel);
-                var topic = Environment.GetEnvironmentVariable("KAFKA_TOPIC");
-                await _eventProducer.ProduceAsync(topic, @event);
+                await _eventProducer.ProduceAsync((dynamic)@event);
             }
         }
         catch (Exception e)

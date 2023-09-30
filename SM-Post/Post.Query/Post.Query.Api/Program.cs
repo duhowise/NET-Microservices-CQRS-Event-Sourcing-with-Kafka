@@ -1,11 +1,12 @@
 using Confluent.Kafka;
-using CQRS.Core.Consumers;
-using CQRS.Core.Handlers;
+using Messaging.Rabbitmq.Extensions;
+using Messaging.Rabbitmq.Implementation;
 using Microsoft.EntityFrameworkCore;
+using Post.Common.Base;
+using Post.Common.Events;
 using Post.Query.Domain.Repositories;
 using Post.Query.Infrastructure.Consumers;
 using Post.Query.Infrastructure.DataAccess;
-using Post.Query.Infrastructure.Handlers;
 using Post.Query.Infrastructure.Repositories;
 using EventHandler = Post.Query.Infrastructure.Handlers.EventHandler;
 
@@ -23,8 +24,21 @@ builder.Services.AddScoped<IPostRepository,PostRepository>();
 builder.Services.AddScoped<ICommentRepository,CommentRepository>();
 builder.Services.AddScoped<IEventHandler,EventHandler>();
 builder.Services.Configure<ConsumerConfig>(builder.Configuration.GetSection(nameof(ConsumerConfig)));
-builder.Services.AddScoped<IEventConsumer, EventConsumer>();
-builder.Services.AddHostedService<ConsumerHostedService>();
+builder.Services.AddQueueing(new QueueingConfigurationSettings
+{
+    RabbitMqConsumerConcurrency = 5,
+    RabbitMqHostname = "localhost",
+    RabbitMqPort = 5672,
+    RabbitMqPassword = "guest",
+    RabbitMqUsername = "guest"
+});
+builder.Services.AddQueueMessageConsumer<CommentAddedQueueConsumer, CommentAddedEvent>();
+builder.Services.AddQueueMessageConsumer<CommentRemovedQueueConsumer, CommentRemovedEvent>();
+builder.Services.AddQueueMessageConsumer<CommentUpdatedQueueConsumer, CommentUpdatedEvent>();
+builder.Services.AddQueueMessageConsumer<MessageUpdatedQueueConsumer,MessageUpdatedEvent>();
+builder.Services.AddQueueMessageConsumer<PostCreatedQueueConsumer, PostCreatedEvent>();
+builder.Services.AddQueueMessageConsumer<PostLikedQueueConsumer, PostLikedEvent>();
+builder.Services.AddQueueMessageConsumer<PostRemovedQueueConsumer, PostRemovedEvent>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
