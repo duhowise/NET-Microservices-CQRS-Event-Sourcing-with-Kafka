@@ -11,6 +11,5 @@ public class PostEntity
     public DateTime DatePosted { get; set; }
     public int Likes { get; set; }
     public string Message { get; set; }
-    [JsonIgnore]
     public virtual ICollection<CommentEntity> Comments { get; set; }
 }
