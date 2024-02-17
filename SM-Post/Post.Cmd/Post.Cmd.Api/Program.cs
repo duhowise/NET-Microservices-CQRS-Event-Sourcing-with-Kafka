@@ -60,7 +60,7 @@ var commandHandler=builder.Services.BuildServiceProvider().GetService<ICommandHa
 var dispatcher = new CommandDispatcher();
 if (commandHandler==null)
 {
-    throw new ArgumentNullException(nameof(commandHandler));
+    throw new ArgumentNullException(nameof(ICommandHandler));
 }
 
 
