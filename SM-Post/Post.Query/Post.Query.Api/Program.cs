@@ -2,8 +2,10 @@ using Confluent.Kafka;
 using Messaging.Rabbitmq.Extensions;
 using Messaging.Rabbitmq.Implementation;
 using Microsoft.EntityFrameworkCore;
+using OpenTelemetry.Trace;
 using Post.Common.Base;
 using Post.Common.Events;
+using Post.Common.Options;
 using Post.Query.Domain.Repositories;
 using Post.Query.Infrastructure.Consumers;
 using Post.Query.Infrastructure.DataAccess;
@@ -39,6 +41,19 @@ builder.Services.AddQueueMessageConsumer<MessageUpdatedQueueConsumer,MessageUpda
 builder.Services.AddQueueMessageConsumer<PostCreatedQueueConsumer, PostCreatedEvent>();
 builder.Services.AddQueueMessageConsumer<PostLikedQueueConsumer, PostLikedEvent>();
 builder.Services.AddQueueMessageConsumer<PostRemovedQueueConsumer, PostRemovedEvent>();
+
+builder.Services.AddOpenTelemetry()
+    .WithTracing(x =>
+    {
+        var serviceConfig = builder.Configuration.GetSection(nameof(OpenTelemetryConfig)).Get<OpenTelemetryConfig>();
+        
+        x.AddAspNetCoreInstrumentation();
+        x.AddJaegerExporter(options =>
+        {
+            options.AgentHost = serviceConfig.Host;
+            options.AgentPort = serviceConfig.Port; 
+        });
+    });
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

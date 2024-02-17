@@ -52,7 +52,7 @@ namespace Messaging.Rabbitmq.Implementation
             _channel.ExchangeDeclare(_queueName, ExchangeType.Direct);
 
             _channel.QueueDeclare(_queueName, true, false, false, queueArgs);
-            _channel.QueueBind(_queueName, _queueName, _queueName, null);
+            _channel.QueueBind(_queueName, _queueName, _queueName, null); 
         }
     }
 }
