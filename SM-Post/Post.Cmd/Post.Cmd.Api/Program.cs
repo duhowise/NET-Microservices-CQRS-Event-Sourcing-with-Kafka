@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Confluent.Kafka;
 using CQRS.Core.Domain;
 using CQRS.Core.Events;
@@ -8,7 +9,6 @@ using CQRS.Core.Producers;
 using Messaging.Rabbitmq.Extensions;
 using Messaging.Rabbitmq.Implementation;
 using MongoDB.Bson.Serialization;
-using OpenTelemetry.Trace;
 using Post.Cmd.Api.Commands;
 using Post.Cmd.Domain.Aggregates;
 using Post.Cmd.Infrastructure.Config;
@@ -20,6 +20,7 @@ using Post.Common.Events;
 using Post.Common.Extensions;
 using Post.Common.Options;
 
+Activity.DefaultIdFormat = ActivityIdFormat.W3C;
 var builder = WebApplication.CreateBuilder(args);
 BsonClassMap.RegisterClassMap<BaseEvent>();
 BsonClassMap.RegisterClassMap<PostCreatedEvent>();
@@ -52,24 +53,17 @@ builder.Services.AddScoped<IEventProducer, EventProducer>();
 builder.Services.AddScoped<IEventStore, EventStore>();
 builder.Services.AddScoped<IEventSourcingHandler<PostAggregate>, EventSourcingHandler>();
 builder.Services.AddScoped<ICommandHandler,CommandHandler>();
-builder.Services.AddOpenTelemetry()
-    .WithTracing(x =>
-    {
-        var serviceConfig = builder.Configuration.GetSection(nameof(OpenTelemetryConfig)).Get<OpenTelemetryConfig>();
-        
-        x.AddAspNetCoreInstrumentation();
-        x.AddJaegerExporter(options =>
-        {
-            options.AgentHost = serviceConfig.Host;
-            options.AgentPort = serviceConfig.Port; 
-        });
-    });
+var serviceConfig = builder.Configuration.GetSection(nameof(OpenTelemetryConfig)).Get<OpenTelemetryConfig>();
+builder.Services.AddOpenTelemetryWithJaeger(serviceConfig.ServiceName, serviceConfig);
+
 var commandHandler=builder.Services.BuildServiceProvider().GetService<ICommandHandler>();
 var dispatcher = new CommandDispatcher();
 if (commandHandler==null)
 {
     throw new ArgumentNullException(nameof(commandHandler));
 }
+
+
 dispatcher.RegisterHandler<NewPostCommand>(commandHandler.HandleAsync);
 dispatcher.RegisterHandler<EditMessageCommand>(commandHandler.HandleAsync);
 dispatcher.RegisterHandler<LikePostCommand>(commandHandler.HandleAsync);

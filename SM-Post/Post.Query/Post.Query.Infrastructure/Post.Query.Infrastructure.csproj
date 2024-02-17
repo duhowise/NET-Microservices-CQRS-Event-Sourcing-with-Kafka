@@ -1,15 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="confluent.Kafka" Version="1.9.4-RC1" />
-    <PackageReference Include="microsoft.entityframeworkcore.sqlserver" Version="6.0.9" />
-    <PackageReference Include="microsoft.extensions.hosting" Version="6.0.1" />
+    <PackageReference Include="confluent.Kafka" Version="2.3.0" />
+    <PackageReference Include="microsoft.entityframeworkcore.sqlserver" Version="8.0.2" />
+    <PackageReference Include="microsoft.extensions.hosting" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
