@@ -74,7 +74,7 @@ public class PostRepository : IPostRepository
 
     }
 
-    public async Task<List<PostEntity>> ListWIthCommentsAsync()
+    public async Task<List<PostEntity>> ListWithCommentsAsync()
     {
         await using var context = _factory.CreateDbContext();
         return await context.Posts.AsNoTracking().Include(x => x.Comments)
