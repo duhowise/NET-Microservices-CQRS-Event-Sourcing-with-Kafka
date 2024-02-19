@@ -16,8 +16,16 @@ public static class OpenTelemetryExtensions
             {
                 builder.AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
-                    .AddSource(serviceName)
+                    .AddSource("QueueProducer")
+                    .AddSource("EventSourcingHandler")
+                    .AddSource("EventHandler")
+                    .AddSource("QueryHandler")
+                    .AddSource("QueueConsumer")
+                    .AddSource("CommandHandler")
                     .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(serviceName))
+#if DEBUG
+                    .AddConsoleExporter()       
+#endif
                     .AddOtlpExporter(options =>
                     {
                       options.Endpoint=  new Uri($"{jaegerConfig.Protocol}://{jaegerConfig.Host}:{jaegerConfig.Port}");
